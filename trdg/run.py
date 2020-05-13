@@ -1,7 +1,7 @@
 import argparse
 import os, errno
 import sys
-
+import json
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 import random as rnd
@@ -436,12 +436,14 @@ def main():
 
     if args.name_format == 2:
         # Create file with filename-to-label connections
+        json_file = {}
+        for i in range(string_count):
+                json_file['val_sys/'+str(i) + "." + args.extension] = strings[i]
         with open(
-            os.path.join(args.output_dir, "labels.txt"), "w", encoding="utf8"
+            os.path.join(args.output_dir, "labels.json"), "w"
         ) as f:
-            for i in range(string_count):
-                file_name = str(i) + "." + args.extension
-                f.write("{} {}\n".format(file_name, strings[i]))
+            
+                json.dump(json_file, f,ensure_ascii=False)
 
 
 if __name__ == "__main__":
